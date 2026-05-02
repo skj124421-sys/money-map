@@ -180,13 +180,16 @@ async function startServer() {
 
   // Vite setup
   if (process.env.NODE_ENV !== "production") {
+    console.log("Development mode: Using Vite dev server");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
     });
     app.use(vite.middlewares);
   } else {
+    console.log("Production mode: Serving static files from dist");
     const distPath = path.resolve(__dirname, "dist");
+    console.log(`Serving from: ${distPath}`);
     app.use(express.static(distPath));
     app.get("*", (req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
